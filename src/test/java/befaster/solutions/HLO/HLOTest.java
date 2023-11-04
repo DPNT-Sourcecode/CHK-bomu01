@@ -1,22 +1,22 @@
-package befaster.solutions.SUM;
+package befaster.solutions.HLO;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class SumSolutionTest {
-    private SumSolution sum;
+public class HLOTest {
+    private HelloSolution hlo;
 
     @BeforeEach
     public void setUp() {
-        sum = new SumSolution();
+        hlo = new HelloSolution();
     }
 
     @Test
     public void compute_sum() {
-        assertThat(sum.compute(1, 1), equalTo(2));
+        assertThat(hlo.hello("test"), equalTo("Hello World!"));
     }
 }
+
