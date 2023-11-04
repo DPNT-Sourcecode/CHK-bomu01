@@ -16,8 +16,8 @@ public class HLOTest {
 
     @Test
     public void compute_sum() {
-        assertThat(hlo.hello("test"), equalTo("Hello, World!"));
+        assertThat(hlo.hello("John"), equalTo("Hello, John!"));
+        assertThat(hlo.hello("test"), equalTo("Hello, test!"));
+        assertThat(hlo.hello(""), equalTo("Hello, !"));
     }
 }
-
-
