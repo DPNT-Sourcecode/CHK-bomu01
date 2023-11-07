@@ -21,7 +21,7 @@ public class CheckoutSolution {
             put("C", new ItemProcessed(20));
             put("D", new ItemProcessed(15));
             put("E", new ItemProcessed(40));
-            put("F", new ItemProcessed(40));
+            put("F", new ItemProcessed(10));
         }};
     }
 
@@ -140,10 +140,6 @@ public class CheckoutSolution {
         throw new RuntimeException("Error Invalid Sku");
     }
 }
-
-
-
-
 
 
 
