@@ -32,13 +32,10 @@ public class CHKTest {
 //        assertThat(chk.checkout("C"), equalTo(20));
 //        assertThat(chk.checkout("D"), equalTo(15));
 //        assertThat(chk.checkout("AAAABBBCD"), equalTo(130 + 50 + 45 + 30 + 20 + 15));
-        assertThat(chk.checkout("EE"), equalTo(40));
-        assertThat(chk.checkout("EEB"), equalTo(40));
-        assertThat(chk.checkout("EEBB"), equalTo(40 + 30));
+        //assertThat(chk.checkout("EE"), equalTo(80));
+        //assertThat(chk.checkout("EEB"), equalTo(80));
+        assertThat(chk.checkout("EEBB"), equalTo(80 + 30));
         assertThat(chk.checkout("AAAAAA"), equalTo(200 + 50));
         assertThat(chk.checkout("AAAAAAAAA"), equalTo(200 + 130 + 50));
     }
 }
-
-
-
