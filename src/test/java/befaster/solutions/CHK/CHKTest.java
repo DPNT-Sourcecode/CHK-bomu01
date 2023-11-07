@@ -53,8 +53,3 @@ public class CHKTest {
         assertThat(chk.checkout("UUUU"), equalTo(120));
     }
 }
-
-
-
-
-
