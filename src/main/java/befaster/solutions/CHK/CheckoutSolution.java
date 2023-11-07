@@ -9,6 +9,9 @@ public class CheckoutSolution {
     record SpecialOffer(int quantity, int newPrice) {
     }
 
+    record FreeItem(int quantity, String freeSku) {
+    }
+
     static class ItemProcessed {
         private final int price;
         private int quantity = 0;
@@ -62,6 +65,10 @@ public class CheckoutSolution {
         }
     }
 
+    final Map<String, FreeItem> freeItems = new HashMap<>() {{ //TODO create a way to discover the free item
+        put("E", new FreeItem(2, "B"));
+    }};
+
     public Integer checkout(String skus) {
 
         final Map<String, ItemProcessed> cart = new HashMap<>() {{
@@ -100,6 +107,7 @@ public class CheckoutSolution {
         throw new RuntimeException("Error Invalid Sku");
     }
 }
+
 
 
 
