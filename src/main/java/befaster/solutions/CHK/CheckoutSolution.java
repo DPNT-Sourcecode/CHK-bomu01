@@ -9,6 +9,7 @@ public class CheckoutSolution {
 
     final static Map<String, FreeItem> freeItems = new HashMap<>() {{
         put("E", new FreeItem(2, "B"));
+        put("F", new FreeItem(3, "F"));
     }};
 
     private static HashMap<String, ItemProcessed> generateNewCart() {
@@ -20,6 +21,7 @@ public class CheckoutSolution {
             put("C", new ItemProcessed(20));
             put("D", new ItemProcessed(15));
             put("E", new ItemProcessed(40));
+            put("F", new ItemProcessed(40));
         }};
     }
 
@@ -138,6 +140,7 @@ public class CheckoutSolution {
         throw new RuntimeException("Error Invalid Sku");
     }
 }
+
 
 
 

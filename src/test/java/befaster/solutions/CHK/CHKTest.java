@@ -39,8 +39,12 @@ public class CHKTest {
         assertThat(chk.checkout("AAAAAAAAA"), equalTo(200 + 130 + 50));
         assertThat(chk.checkout("EEEEBB"), equalTo(160));
         assertThat(chk.checkout("BEBEEE"), equalTo(160));
+        assertThat(chk.checkout("FF"), equalTo(20));
+        assertThat(chk.checkout("FFF"), equalTo(20));
+        assertThat(chk.checkout("FFFFFF"), equalTo(40));
     }
 }
+
 
 
 
