@@ -126,8 +126,8 @@ public class CheckoutSolution {
     private HashMap<String, ItemProcessed> generateNewCart() {
         return new HashMap<>() {{
             put("A", new ItemProcessed(50, List.of(
-                    new SpecialOffer(3, 130),
-                    new SpecialOffer(5, 200))));
+                    new SpecialOffer(5, 200),
+                    new SpecialOffer(3, 130))));
             put("B", new ItemProcessed(30, List.of(new SpecialOffer(2, 45))));
             put("C", new ItemProcessed(20));
             put("D", new ItemProcessed(15));
@@ -135,6 +135,7 @@ public class CheckoutSolution {
         }};
     }
 }
+
 
 
 
