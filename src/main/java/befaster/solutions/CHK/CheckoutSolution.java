@@ -69,6 +69,7 @@ public class CheckoutSolution {
             put("B", new ItemProcessed(30, new SpecialOffer(2, 45)));
             put("C", new ItemProcessed(20));
             put("D", new ItemProcessed(15));
+            put("E", new ItemProcessed(40));
         }};
 
         if (skus == null) {
@@ -99,6 +100,7 @@ public class CheckoutSolution {
         throw new RuntimeException("Error Invalid Sku");
     }
 }
+
 
 
 
