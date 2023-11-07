@@ -22,6 +22,26 @@ public class CheckoutSolution {
             put("D", new ItemProcessed(15));
             put("E", new ItemProcessed(40));
             put("F", new ItemProcessed(10));
+            put("G", new ItemProcessed(20));
+            put("H", new ItemProcessed(10));
+            put("I", new ItemProcessed(35));
+            put("J", new ItemProcessed(60));
+            put("K", new ItemProcessed(10));
+            put("L", new ItemProcessed(10));
+            put("M", new ItemProcessed(10));
+            put("N", new ItemProcessed(10));
+            put("O", new ItemProcessed(10));
+            put("P", new ItemProcessed(10));
+            put("Q", new ItemProcessed(10));
+            put("R", new ItemProcessed(10));
+            put("S", new ItemProcessed(10));
+            put("T", new ItemProcessed(10));
+            put("U", new ItemProcessed(10));
+            put("V", new ItemProcessed(10));
+            put("W", new ItemProcessed(10));
+            put("X", new ItemProcessed(10));
+            put("Y", new ItemProcessed(10));
+            put("Z", new ItemProcessed(10));
         }};
     }
 
@@ -140,6 +160,7 @@ public class CheckoutSolution {
         throw new RuntimeException("Error Invalid Sku");
     }
 }
+
 
 
 
