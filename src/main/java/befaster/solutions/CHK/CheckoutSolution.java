@@ -62,15 +62,14 @@ public class CheckoutSolution {
         }
     }
 
-    private final Map<String, ItemProcessed> cart = new HashMap<>() {{
-        put("A", new ItemProcessed(50, new SpecialOffer(3, 130)));
-        put("B", new ItemProcessed(30, new SpecialOffer(2, 45)));
-        put("C", new ItemProcessed(20));
-        put("D", new ItemProcessed(15));
-    }};
-
-
     public Integer checkout(String skus) {
+
+        final Map<String, ItemProcessed> cart = new HashMap<>() {{
+            put("A", new ItemProcessed(50, new SpecialOffer(3, 130)));
+            put("B", new ItemProcessed(30, new SpecialOffer(2, 45)));
+            put("C", new ItemProcessed(20));
+            put("D", new ItemProcessed(15));
+        }};
 
         if (skus == null) {
             return -1;
@@ -80,7 +79,7 @@ public class CheckoutSolution {
 
         try {
             Arrays.stream(skus.split(""))
-                    .map(this::validateIfKeyIsValid)
+                    .map(sku -> validateIfKeyIsValid(cart, sku))
                     .map(cart::get)
                     .forEach(ItemProcessed::add);
             return cart.values()
@@ -93,18 +92,13 @@ public class CheckoutSolution {
         }
     }
 
-    private String validateIfKeyIsValid(String sku) {
+    private String validateIfKeyIsValid(final Map<String, ItemProcessed> cart, final String sku) {
         if (cart.containsKey(sku)) {
             return sku;
         }
         throw new RuntimeException("Error Invalid Sku");
     }
 }
-
-
-
-
-
 
 
 
