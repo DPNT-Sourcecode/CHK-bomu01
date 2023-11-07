@@ -78,10 +78,9 @@ public class CheckoutSolution {
                 final var discountedPrice = quantityToDiscount * offer.newPrice();
                 final var numberOfOffers = (quantityToDiscount * offer.quantity());
                 remainingQuantity = remainingQuantity - numberOfOffers;
-                final var remainingPrice = remainingQuantity * this.getPrice();
-                currentValue = currentValue + discountedPrice + remainingPrice;
+                currentValue = currentValue + discountedPrice;
             }
-            return currentValue;
+            return currentValue + remainingQuantity * this.getPrice();
         }
     }
 
@@ -136,6 +135,7 @@ public class CheckoutSolution {
         }};
     }
 }
+
 
 
 
