@@ -38,4 +38,3 @@ public class CHKTest {
         assertThat(chk.checkout("AAAAAAAAA"), equalTo(200 + 130 + 50));
     }
 }
-

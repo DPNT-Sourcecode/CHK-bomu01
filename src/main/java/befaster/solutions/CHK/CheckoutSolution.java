@@ -55,19 +55,20 @@ public class CheckoutSolution {
         }
 
         private int calculateNewValue() {
-            if (this.getSpecialOffer().isEmpty())
-            for (final SpecialOffer offers: this.getSpecialOffer()) {
-
+            if (this.getSpecialOffer().isEmpty()){
+                return this.getQuantity() * this.getPrice();
             }
-
-            if (this.getSpecialOffer() != null) {
-                final var quantityToDiscount = (int) Math.floor((double) this.getQuantity() / this.getSpecialOffer().quantity());
-                final var discountedPrice = quantityToDiscount * this.getSpecialOffer().newPrice();
-                final var numberOfOffers = (quantityToDiscount * this.getSpecialOffer().quantity());
-                final var remainingPrice = (this.getQuantity() - numberOfOffers) * this.getPrice();
-                return discountedPrice + remainingPrice;
+            int remainingQuantity = this.getQuantity();
+            int currentValue = 0;
+            for (final SpecialOffer offer: this.getSpecialOffer()) {
+                final var quantityToDiscount = (int) Math.floor((double) remainingQuantity / offer.quantity());
+                final var discountedPrice = quantityToDiscount * offer.newPrice();
+                final var numberOfOffers = (quantityToDiscount * offer.quantity());
+                remainingQuantity = remainingQuantity - numberOfOffers;
+                final var remainingPrice = remainingQuantity * this.getPrice();
+                currentValue = currentValue + discountedPrice + remainingPrice;
             }
-            return this.getQuantity() * this.getPrice();
+            return currentValue;
         }
     }
 
@@ -115,10 +116,6 @@ public class CheckoutSolution {
         throw new RuntimeException("Error Invalid Sku");
     }
 }
-
-
-
-
 
 
 
