@@ -60,6 +60,3 @@ public class CHKTest {
         assertThat(chk.checkout("ZSSZ"), equalTo(45 + 20));
     }
 }
-
-
-
