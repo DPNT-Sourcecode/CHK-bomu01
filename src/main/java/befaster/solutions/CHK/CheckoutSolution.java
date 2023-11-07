@@ -2,6 +2,7 @@ package befaster.solutions.CHK;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CheckoutSolution {
@@ -17,15 +18,15 @@ public class CheckoutSolution {
         private int quantity = 0;
 
         private int currentValueInCart = 0;
-        private SpecialOffer specialOffer = null;
+        private List<SpecialOffer> specialOffers = List.of(); //todo list
 
         public ItemProcessed(int price) {
             this.price = price;
         }
 
-        public ItemProcessed(int price, SpecialOffer specialOffer) {
+        public ItemProcessed(int price, List<SpecialOffer> specialOffers) {
             this.price = price;
-            this.specialOffer = specialOffer;
+            this.specialOffers = specialOffers;
         }
 
         public int getCurrentValueInCart() {
@@ -40,8 +41,8 @@ public class CheckoutSolution {
             return quantity;
         }
 
-        public SpecialOffer getSpecialOffer() {
-            return specialOffer;
+        public List<SpecialOffer> getSpecialOffer() {
+            return specialOffers;
         }
 
         public void setCurrentValueInCart(int currentValueInCart) {
@@ -54,6 +55,11 @@ public class CheckoutSolution {
         }
 
         private int calculateNewValue() {
+            if (this.getSpecialOffer().isEmpty())
+            for (final SpecialOffer offers: this.getSpecialOffer()) {
+
+            }
+
             if (this.getSpecialOffer() != null) {
                 final var quantityToDiscount = (int) Math.floor((double) this.getQuantity() / this.getSpecialOffer().quantity());
                 final var discountedPrice = quantityToDiscount * this.getSpecialOffer().newPrice();
@@ -72,8 +78,10 @@ public class CheckoutSolution {
     public Integer checkout(String skus) {
 
         final Map<String, ItemProcessed> cart = new HashMap<>() {{
-            put("A", new ItemProcessed(50, new SpecialOffer(3, 130)));
-            put("B", new ItemProcessed(30, new SpecialOffer(2, 45)));
+            put("A", new ItemProcessed(50, List.of(
+                    new SpecialOffer(3, 130),
+                    new SpecialOffer(5, 200))));
+            put("B", new ItemProcessed(30, List.of(new SpecialOffer(2, 45))));
             put("C", new ItemProcessed(20));
             put("D", new ItemProcessed(15));
             put("E", new ItemProcessed(40));
@@ -107,6 +115,7 @@ public class CheckoutSolution {
         throw new RuntimeException("Error Invalid Sku");
     }
 }
+
 
 
 
