@@ -51,10 +51,13 @@ public class CheckoutSolution {
         }
 
         private int calculateNewValue() {
-            final var quantityToDiscount = (int) Math.floor((double) this.getQuantity() / this.getSpecialOffer().quantity());
-            final var discountedPrice = quantityToDiscount * this.getSpecialOffer().newPrice();
-            final var remainingPrice = (this.getQuantity() - quantityToDiscount) * this.getPrice();
-            return discountedPrice + remainingPrice;
+            if(this.getSpecialOffer() != null){
+                final var quantityToDiscount = (int) Math.floor((double) this.getQuantity() / this.getSpecialOffer().quantity());
+                final var discountedPrice = quantityToDiscount * this.getSpecialOffer().newPrice();
+                final var remainingPrice = (this.getQuantity() - quantityToDiscount) * this.getPrice();
+                return discountedPrice + remainingPrice;
+            }
+            return this.getQuantity()* this.getPrice();
         }
     }
 
@@ -76,8 +79,8 @@ public class CheckoutSolution {
 
         try {
             Arrays.stream(skus.split(""))
-                    .map(sku -> validateIfKeyIsValid(sku))
-                    .map(key -> cart.get(key))
+                    .map(this::validateIfKeyIsValid)
+                    .map(cart::get)
                     .forEach(ItemProcessed::add);
             return cart.values()
                     .stream()
@@ -90,12 +93,13 @@ public class CheckoutSolution {
     }
 
     private String validateIfKeyIsValid(String sku) {
-        if(cart.containsKey(sku)){
+        if (cart.containsKey(sku)) {
             return sku;
         }
         throw new RuntimeException("Error Invalid Sku");
     }
 }
+
 
 
 
