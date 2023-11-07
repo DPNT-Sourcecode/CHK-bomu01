@@ -7,6 +7,10 @@ import java.util.Map;
 
 public class CheckoutSolution {
 
+    final static Map<String, FreeItem> freeItems = new HashMap<>() {{
+        put("E", new FreeItem(2, "B"));
+    }};
+
     record SpecialOffer(int quantity, int newPrice) {
     }
 
@@ -18,7 +22,7 @@ public class CheckoutSolution {
         private int quantity = 0;
 
         private int currentValueInCart = 0;
-        private List<SpecialOffer> specialOffers = List.of(); //todo list
+        private List<SpecialOffer> specialOffers = List.of();
 
         public ItemProcessed(int price) {
             this.price = price;
@@ -49,18 +53,27 @@ public class CheckoutSolution {
             this.currentValueInCart = currentValueInCart;
         }
 
+        public void setQuantity(int quantity) {
+            this.quantity = quantity;
+        }
+
         public void add() {
             this.quantity++;
             this.setCurrentValueInCart(calculateNewValue());
         }
 
+        public void remove() {
+            this.quantity--;
+            this.setCurrentValueInCart(calculateNewValue());
+        }
+
         private int calculateNewValue() {
-            if (this.getSpecialOffer().isEmpty()){
+            if (this.getSpecialOffer().isEmpty()) {
                 return this.getQuantity() * this.getPrice();
             }
             int remainingQuantity = this.getQuantity();
             int currentValue = 0;
-            for (final SpecialOffer offer: this.getSpecialOffer()) {
+            for (final SpecialOffer offer : this.getSpecialOffer()) {
                 final var quantityToDiscount = (int) Math.floor((double) remainingQuantity / offer.quantity());
                 final var discountedPrice = quantityToDiscount * offer.newPrice();
                 final var numberOfOffers = (quantityToDiscount * offer.quantity());
@@ -72,33 +85,19 @@ public class CheckoutSolution {
         }
     }
 
-    final Map<String, FreeItem> freeItems = new HashMap<>() {{ //TODO create a way to discover the free item
-        put("E", new FreeItem(2, "B"));
-    }};
-
     public Integer checkout(String skus) {
-
-        final Map<String, ItemProcessed> cart = new HashMap<>() {{
-            put("A", new ItemProcessed(50, List.of(
-                    new SpecialOffer(3, 130),
-                    new SpecialOffer(5, 200))));
-            put("B", new ItemProcessed(30, List.of(new SpecialOffer(2, 45))));
-            put("C", new ItemProcessed(20));
-            put("D", new ItemProcessed(15));
-            put("E", new ItemProcessed(40));
-        }};
-
         if (skus == null) {
             return -1;
         } else if (skus.trim().isEmpty()) {
             return 0;
         }
-
         try {
+            final Map<String, ItemProcessed> cart = generateNewCart();
             Arrays.stream(skus.split(""))
                     .map(sku -> validateIfKeyIsValid(cart, sku))
                     .map(cart::get)
                     .forEach(ItemProcessed::add);
+            applyForFreeItems(cart);
             return cart.values()
                     .stream()
                     .map(ItemProcessed::getCurrentValueInCart)
@@ -109,13 +108,35 @@ public class CheckoutSolution {
         }
     }
 
+    private void applyForFreeItems(final Map<String, ItemProcessed> cart) {
+        cart.entrySet()
+                .stream()
+                .filter(entry -> freeItems.containsKey(entry.getKey()))
+                .filter(entry -> entry.getValue().getQuantity() >= freeItems.get(entry.getKey()).quantity())
+                .filter(entry -> cart.get(freeItems.get(entry.getKey()).freeSku()).getQuantity() > 0)
+                .forEach(entry -> cart.get(freeItems.get(entry.getKey()).freeSku()).add());
+    }
+
     private String validateIfKeyIsValid(final Map<String, ItemProcessed> cart, final String sku) {
         if (cart.containsKey(sku)) {
             return sku;
         }
         throw new RuntimeException("Error Invalid Sku");
     }
+
+    private HashMap<String, ItemProcessed> generateNewCart() {
+        return new HashMap<>() {{
+            put("A", new ItemProcessed(50, List.of(
+                    new SpecialOffer(3, 130),
+                    new SpecialOffer(5, 200))));
+            put("B", new ItemProcessed(30, List.of(new SpecialOffer(2, 45))));
+            put("C", new ItemProcessed(20));
+            put("D", new ItemProcessed(15));
+            put("E", new ItemProcessed(40));
+        }};
+    }
 }
+
 
 
 
