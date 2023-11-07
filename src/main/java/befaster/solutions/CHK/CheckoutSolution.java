@@ -73,8 +73,8 @@ public class CheckoutSolution {
             this.setCurrentValueInCart(calculateNewValue());
         }
 
-        public void remove() {
-            this.quantity--;
+        public void remove(final int quantityToRemove) {
+            this.quantity = this.quantity - quantityToRemove;
             this.setCurrentValueInCart(calculateNewValue());
         }
 
@@ -122,9 +122,13 @@ public class CheckoutSolution {
                 .filter(entry -> freeItems.containsKey(entry.getKey()))
                 .filter(entry -> entry.getValue().getQuantity() >= freeItems.get(entry.getKey()).quantity())
                 .filter(entry -> cart.get(freeItems.get(entry.getKey()).freeSku()).getQuantity() > 0)
-                .forEach(entry -> cart.get(freeItems.get(entry.getKey()).freeSku()).remove());
+                .forEach(entry -> cart.get(freeItems.get(entry.getKey()).freeSku()).remove(calculateQuantityToRemove(entry)));
 
         return cart;
+    }
+
+    private int calculateQuantityToRemove(Map.Entry<String, ItemProcessed> entry) {
+        return (int) Math.floor((double)entry.getValue().getQuantity() / freeItems.get(entry.getKey()).quantity());
     }
 
     private String validateIfKeyIsValid(final Map<String, ItemProcessed> cart, final String sku) {
@@ -134,6 +138,7 @@ public class CheckoutSolution {
         throw new RuntimeException("Error Invalid Sku");
     }
 }
+
 
 
 
