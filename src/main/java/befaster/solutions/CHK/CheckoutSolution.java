@@ -10,6 +10,9 @@ public class CheckoutSolution {
     final static Map<String, FreeItem> freeItems = new HashMap<>() {{
         put("E", new FreeItem(2, "B"));
         put("F", new FreeItem(3, "F"));
+        put("N", new FreeItem(3, "M"));
+        put("R", new FreeItem(3, "Q"));
+        put("U", new FreeItem(4, "U"));
     }};
 
     private static HashMap<String, ItemProcessed> generateNewCart() {
@@ -26,22 +29,22 @@ public class CheckoutSolution {
             put("H", new ItemProcessed(10));
             put("I", new ItemProcessed(35));
             put("J", new ItemProcessed(60));
-            put("K", new ItemProcessed(10));
-            put("L", new ItemProcessed(10));
-            put("M", new ItemProcessed(10));
-            put("N", new ItemProcessed(10));
+            put("K", new ItemProcessed(80));
+            put("L", new ItemProcessed(90));
+            put("M", new ItemProcessed(15));
+            put("N", new ItemProcessed(40));
             put("O", new ItemProcessed(10));
-            put("P", new ItemProcessed(10));
-            put("Q", new ItemProcessed(10));
-            put("R", new ItemProcessed(10));
-            put("S", new ItemProcessed(10));
-            put("T", new ItemProcessed(10));
-            put("U", new ItemProcessed(10));
-            put("V", new ItemProcessed(10));
-            put("W", new ItemProcessed(10));
-            put("X", new ItemProcessed(10));
+            put("P", new ItemProcessed(50));
+            put("Q", new ItemProcessed(30));
+            put("R", new ItemProcessed(50));
+            put("S", new ItemProcessed(30));
+            put("T", new ItemProcessed(20));
+            put("U", new ItemProcessed(40));
+            put("V", new ItemProcessed(50));
+            put("W", new ItemProcessed(20));
+            put("X", new ItemProcessed(90));
             put("Y", new ItemProcessed(10));
-            put("Z", new ItemProcessed(10));
+            put("Z", new ItemProcessed(50));
         }};
     }
 
@@ -160,6 +163,7 @@ public class CheckoutSolution {
         throw new RuntimeException("Error Invalid Sku");
     }
 }
+
 
 
 
