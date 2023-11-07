@@ -27,4 +27,3 @@ public class CHKTest {
         assertThat(chk.checkout("AAAABBBCD"), equalTo(130 + 50 + 45 + 30 + 20 + 15));
     }
 }
-
