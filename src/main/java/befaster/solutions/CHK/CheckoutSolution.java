@@ -54,7 +54,8 @@ public class CheckoutSolution {
             if(this.getSpecialOffer() != null){
                 final var quantityToDiscount = (int) Math.floor((double) this.getQuantity() / this.getSpecialOffer().quantity());
                 final var discountedPrice = quantityToDiscount * this.getSpecialOffer().newPrice();
-                final var remainingPrice = (this.getQuantity() - quantityToDiscount) * this.getPrice();
+                final var numberOfOffers = (quantityToDiscount * this.getSpecialOffer().quantity());
+                final var remainingPrice = (this.getQuantity() - numberOfOffers) * this.getPrice();
                 return discountedPrice + remainingPrice;
             }
             return this.getQuantity()* this.getPrice();
@@ -99,6 +100,7 @@ public class CheckoutSolution {
         throw new RuntimeException("Error Invalid Sku");
     }
 }
+
 
 
 
