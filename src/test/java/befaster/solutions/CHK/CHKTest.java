@@ -40,6 +40,13 @@ public class CHKTest {
         assertThat(chk.checkout("FF"), equalTo(20));
         assertThat(chk.checkout("FFF"), equalTo(20));
         assertThat(chk.checkout("FFFFFF"), equalTo(40));
+        assertThat(chk.checkout("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), equalTo(50+30+20+15+40+10+20+10+35+60+80+90+15+40+10+50+30+50+30+20+40+50+20+90+10+50));
+        assertThat(chk.checkout("HHHHHHHHHHHHHHH"), equalTo(80+45));
+        assertThat(chk.checkout("KKK"), equalTo(150 + 80));
+        assertThat(chk.checkout("PPPPPP"), equalTo(200 + 50));
+        assertThat(chk.checkout("QQQQ"), equalTo(80+30));
+        assertThat(chk.checkout("VVVVVV"), equalTo(130+90+50));
     }
 }
+
 
