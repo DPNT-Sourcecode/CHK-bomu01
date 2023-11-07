@@ -26,21 +26,25 @@ public class CheckoutSolution {
             put("E", new ItemProcessed(40));
             put("F", new ItemProcessed(10));
             put("G", new ItemProcessed(20));
-            put("H", new ItemProcessed(10));
+            put("H", new ItemProcessed(10, List.of(
+                    new SpecialOffer(10, 80),
+                    new SpecialOffer(5, 45))));
             put("I", new ItemProcessed(35));
             put("J", new ItemProcessed(60));
-            put("K", new ItemProcessed(80));
+            put("K", new ItemProcessed(80, List.of(new SpecialOffer(2, 150))));
             put("L", new ItemProcessed(90));
             put("M", new ItemProcessed(15));
             put("N", new ItemProcessed(40));
             put("O", new ItemProcessed(10));
-            put("P", new ItemProcessed(50));
-            put("Q", new ItemProcessed(30));
+            put("P", new ItemProcessed(50, List.of(new SpecialOffer(5, 200))));
+            put("Q", new ItemProcessed(30, List.of(new SpecialOffer(3, 80))));
             put("R", new ItemProcessed(50));
             put("S", new ItemProcessed(30));
             put("T", new ItemProcessed(20));
             put("U", new ItemProcessed(40));
-            put("V", new ItemProcessed(50));
+            put("V", new ItemProcessed(50, List.of(
+                    new SpecialOffer(3, 130),
+                    new SpecialOffer(2, 90))));
             put("W", new ItemProcessed(20));
             put("X", new ItemProcessed(90));
             put("Y", new ItemProcessed(10));
@@ -153,7 +157,7 @@ public class CheckoutSolution {
     }
 
     private int calculateQuantityToRemove(Map.Entry<String, ItemProcessed> entry) {
-        return (int) Math.floor((double)entry.getValue().getQuantity() / freeItems.get(entry.getKey()).quantity());
+        return (int) Math.floor((double) entry.getValue().getQuantity() / freeItems.get(entry.getKey()).quantity());
     }
 
     private String validateIfKeyIsValid(final Map<String, ItemProcessed> cart, final String sku) {
@@ -163,6 +167,7 @@ public class CheckoutSolution {
         throw new RuntimeException("Error Invalid Sku");
     }
 }
+
 
 
 

@@ -21,8 +21,6 @@ public class CHKTest {
         assertThat(chk.checkout(""), equalTo(0));
         assertThat(chk.checkout(" "), equalTo(0)); //TODO check this
         assertThat(chk.checkout("."), equalTo(-1));
-        assertThat(chk.checkout("K"), equalTo(-1));
-        assertThat(chk.checkout("KZ"), equalTo(-1));
         assertThat(chk.checkout("aBC"), equalTo(-1));
         assertThat(chk.checkout("AAA"), equalTo(130));
         assertThat(chk.checkout("AA"), equalTo(100));
@@ -44,3 +42,4 @@ public class CHKTest {
         assertThat(chk.checkout("FFFFFF"), equalTo(40));
     }
 }
+
