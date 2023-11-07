@@ -11,6 +11,18 @@ public class CheckoutSolution {
         put("E", new FreeItem(2, "B"));
     }};
 
+    private static HashMap<String, ItemProcessed> generateNewCart() {
+        return new HashMap<>() {{
+            put("A", new ItemProcessed(50, List.of(
+                    new SpecialOffer(5, 200),
+                    new SpecialOffer(3, 130))));
+            put("B", new ItemProcessed(30, List.of(new SpecialOffer(2, 45))));
+            put("C", new ItemProcessed(20));
+            put("D", new ItemProcessed(15));
+            put("E", new ItemProcessed(40));
+        }};
+    }
+
     record SpecialOffer(int quantity, int newPrice) {
     }
 
@@ -20,7 +32,6 @@ public class CheckoutSolution {
     static class ItemProcessed {
         private final int price;
         private int quantity = 0;
-
         private int currentValueInCart = 0;
         private List<SpecialOffer> specialOffers = List.of();
 
@@ -75,10 +86,8 @@ public class CheckoutSolution {
             int currentValue = 0;
             for (final SpecialOffer offer : this.getSpecialOffer()) {
                 final var quantityToDiscount = (int) Math.floor((double) remainingQuantity / offer.quantity());
-                final var discountedPrice = quantityToDiscount * offer.newPrice();
-                final var numberOfOffers = (quantityToDiscount * offer.quantity());
-                remainingQuantity = remainingQuantity - numberOfOffers;
-                currentValue = currentValue + discountedPrice;
+                remainingQuantity = remainingQuantity - (quantityToDiscount * offer.quantity());
+                currentValue = currentValue + (quantityToDiscount * offer.newPrice());
             }
             return currentValue + remainingQuantity * this.getPrice();
         }
@@ -96,8 +105,8 @@ public class CheckoutSolution {
                     .map(sku -> validateIfKeyIsValid(cart, sku))
                     .map(cart::get)
                     .forEach(ItemProcessed::add);
-            applyForFreeItems(cart);
-            return cart.values()
+            return removeFreeItems(cart)
+                    .values()
                     .stream()
                     .map(ItemProcessed::getCurrentValueInCart)
                     .reduce(0, Integer::sum);
@@ -107,13 +116,15 @@ public class CheckoutSolution {
         }
     }
 
-    private void applyForFreeItems(final Map<String, ItemProcessed> cart) {
+    private Map<String, ItemProcessed> removeFreeItems(final Map<String, ItemProcessed> cart) {
         cart.entrySet()
                 .stream()
                 .filter(entry -> freeItems.containsKey(entry.getKey()))
                 .filter(entry -> entry.getValue().getQuantity() >= freeItems.get(entry.getKey()).quantity())
                 .filter(entry -> cart.get(freeItems.get(entry.getKey()).freeSku()).getQuantity() > 0)
                 .forEach(entry -> cart.get(freeItems.get(entry.getKey()).freeSku()).remove());
+
+        return cart;
     }
 
     private String validateIfKeyIsValid(final Map<String, ItemProcessed> cart, final String sku) {
@@ -122,19 +133,8 @@ public class CheckoutSolution {
         }
         throw new RuntimeException("Error Invalid Sku");
     }
-
-    private HashMap<String, ItemProcessed> generateNewCart() {
-        return new HashMap<>() {{
-            put("A", new ItemProcessed(50, List.of(
-                    new SpecialOffer(5, 200),
-                    new SpecialOffer(3, 130))));
-            put("B", new ItemProcessed(30, List.of(new SpecialOffer(2, 45))));
-            put("C", new ItemProcessed(20));
-            put("D", new ItemProcessed(15));
-            put("E", new ItemProcessed(40));
-        }};
-    }
 }
+
 
 
 
