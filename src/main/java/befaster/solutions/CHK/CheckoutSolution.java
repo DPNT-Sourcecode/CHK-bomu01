@@ -114,7 +114,7 @@ public class CheckoutSolution {
                 .filter(entry -> freeItems.containsKey(entry.getKey()))
                 .filter(entry -> entry.getValue().getQuantity() >= freeItems.get(entry.getKey()).quantity())
                 .filter(entry -> cart.get(freeItems.get(entry.getKey()).freeSku()).getQuantity() > 0)
-                .forEach(entry -> cart.get(freeItems.get(entry.getKey()).freeSku()).add());
+                .forEach(entry -> cart.get(freeItems.get(entry.getKey()).freeSku()).remove());
     }
 
     private String validateIfKeyIsValid(final Map<String, ItemProcessed> cart, final String sku) {
@@ -136,6 +136,7 @@ public class CheckoutSolution {
         }};
     }
 }
+
 
 
 
