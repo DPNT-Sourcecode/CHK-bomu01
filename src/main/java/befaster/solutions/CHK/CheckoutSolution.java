@@ -74,14 +74,21 @@ public class CheckoutSolution {
             return 0;
         }
 
-        Arrays.stream(skus.split(""))
-                .forEach(sku -> cart.get(sku).add());
-        return cart.values()
-                .stream()
-                .map(ItemProcessed::getCurrentValueInCart)
-                .reduce(0, Integer::sum);
+        try {
+            Arrays.stream(skus.split(""))
+                    .map(cart::get)
+                    .forEach(ItemProcessed::add);
+            return cart.values()
+                    .stream()
+                    .map(ItemProcessed::getCurrentValueInCart)
+                    .reduce(0, Integer::sum);
+
+        } catch (Exception e) {
+            return -1;
+        }
     }
 }
+
 
 
 
