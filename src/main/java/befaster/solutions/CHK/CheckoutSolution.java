@@ -15,6 +15,8 @@ public class CheckoutSolution {
         put("U", new FreeItem(4, "U"));
     }};
 
+    final static GroupedItems groupedItems = new GroupedItems(3, 45, List.of("S", "T", "X", "Y", "Z"));
+
     private static HashMap<String, ItemProcessed> generateNewCart() {
         return new HashMap<>() {{
             put("A", new ItemProcessed(50, List.of(
@@ -58,6 +60,9 @@ public class CheckoutSolution {
     record FreeItem(int quantity, String freeSku) {
     }
 
+    record GroupedItems(int quantity, int newPrice, List<String> skus) {
+    }
+
     static class ItemProcessed {
         private final int price;
         private int quantity = 0;
@@ -93,10 +98,6 @@ public class CheckoutSolution {
             this.currentValueInCart = currentValueInCart;
         }
 
-        public void setQuantity(int quantity) {
-            this.quantity = quantity;
-        }
-
         public void add() {
             this.quantity++;
             this.setCurrentValueInCart(calculateNewValue());
@@ -130,19 +131,33 @@ public class CheckoutSolution {
         }
         try {
             final Map<String, ItemProcessed> cart = generateNewCart();
-            Arrays.stream(skus.split(""))
-                    .map(sku -> validateIfKeyIsValid(cart, sku))
-                    .map(cart::get)
-                    .forEach(ItemProcessed::add);
-            return removeFreeItems(cart)
-                    .values()
-                    .stream()
-                    .map(ItemProcessed::getCurrentValueInCart)
-                    .reduce(0, Integer::sum);
+            processSkus(skus, cart);
+            removeFreeItems(cart);
+            return calculateNonGroupedItems(cart) + calculateGroupedItems(cart);
 
         } catch (final RuntimeException e) {
             return -1;
         }
+    }
+
+    private Integer calculateGroupedItems(final Map<String, ItemProcessed> cart) {
+        return 0;
+    }
+
+    private Integer calculateNonGroupedItems(final Map<String, ItemProcessed> cart) {
+        return cart.entrySet()
+                .stream()
+                .filter(e -> !groupedItems.skus().contains(e.getKey()))
+                .map(Map.Entry::getValue)
+                .map(ItemProcessed::getCurrentValueInCart)
+                .reduce(0, Integer::sum);
+    }
+
+    private void processSkus(final String skus, final Map<String, ItemProcessed> cart) {
+        Arrays.stream(skus.split(""))
+                .map(sku -> validateIfKeyIsValid(cart, sku))
+                .map(cart::get)
+                .forEach(ItemProcessed::add);
     }
 
     private Map<String, ItemProcessed> removeFreeItems(final Map<String, ItemProcessed> cart) {
@@ -152,11 +167,10 @@ public class CheckoutSolution {
                 .filter(entry -> entry.getValue().getQuantity() >= freeItems.get(entry.getKey()).quantity())
                 .filter(entry -> cart.get(freeItems.get(entry.getKey()).freeSku()).getQuantity() > 0)
                 .forEach(entry -> cart.get(freeItems.get(entry.getKey()).freeSku()).remove(calculateQuantityToRemove(entry)));
-
         return cart;
     }
 
-    private int calculateQuantityToRemove(Map.Entry<String, ItemProcessed> entry) {
+    private int calculateQuantityToRemove(final Map.Entry<String, ItemProcessed> entry) {
         return (int) Math.floor((double) entry.getValue().getQuantity() / freeItems.get(entry.getKey()).quantity());
     }
 
@@ -167,6 +181,7 @@ public class CheckoutSolution {
         throw new RuntimeException("Error Invalid Sku");
     }
 }
+
 
 
 
