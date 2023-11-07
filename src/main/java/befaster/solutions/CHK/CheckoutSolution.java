@@ -76,18 +76,27 @@ public class CheckoutSolution {
 
         try {
             Arrays.stream(skus.split(""))
-                    .map(cart::get)
+                    .map(sku -> validateIfKeyIsValid(sku))
+                    .map(key -> cart.get(key))
                     .forEach(ItemProcessed::add);
             return cart.values()
                     .stream()
                     .map(ItemProcessed::getCurrentValueInCart)
                     .reduce(0, Integer::sum);
 
-        } catch (Exception e) {
+        } catch (final RuntimeException e) {
             return -1;
         }
     }
+
+    private String validateIfKeyIsValid(String sku) {
+        if(cart.containsKey(sku)){
+            return sku;
+        }
+        throw new RuntimeException("Error Invalid Sku");
+    }
 }
+
 
 
 
