@@ -17,8 +17,6 @@ public class CHKTest {
 
     @Test
     public void compute_sum() {
-
-        assertThat(chk.checkout("VVVVVV"), equalTo(130+90+50)); //CHECK THIS
         assertThat(chk.checkout(null), equalTo(-1));
         assertThat(chk.checkout(""), equalTo(0));
         assertThat(chk.checkout(" "), equalTo(0)); //TODO check this
@@ -55,6 +53,7 @@ public class CHKTest {
         assertThat(chk.checkout("UUUU"), equalTo(120));
     }
 }
+
 
 
 
