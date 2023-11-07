@@ -1,9 +1,19 @@
 package befaster.solutions.CHK;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class CheckoutSolution {
 
+
+    private Map<String, Objects> store = new HashMap<>(){{
+        put("A", );
+        put("B", );
+        put("C", );
+        put("D", );
+    }};
 
 
 
@@ -15,16 +25,18 @@ public class CheckoutSolution {
             return 0;
         }
 
-
+        Arrays.stream(skus.split(""))
+                .toList();
 
 
         return 0; //TODO
     }
 
-    public static void main(String[] args) {
-        Arrays.stream("ABC".split("")).peek(a -> System.out.println(a)).toList();
-    }
+    /*public static void main(String[] args) {
+        //Arrays.stream("ABC".split("")).peek(a -> System.out.println(a)).toList();
+    }*/
 }
+
 
 
 
