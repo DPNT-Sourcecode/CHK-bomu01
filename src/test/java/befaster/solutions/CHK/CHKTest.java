@@ -19,7 +19,7 @@ public class CHKTest {
     public void compute_sum() {
         assertThat(chk.checkout(null), equalTo(-1));
         assertThat(chk.checkout(""), equalTo(0)); //check this to see if this is an invalid input
-        assertThat(chk.checkout(" "), equalTo(0)); //check this to see if this is an invalid input
+        assertThat(chk.checkout(" "), equalTo(-1));
         assertThat(chk.checkout("."), equalTo(-1));
         assertThat(chk.checkout("K"), equalTo(-1));
         assertThat(chk.checkout("KZ"), equalTo(-1));
@@ -27,3 +27,4 @@ public class CHKTest {
         assertThat(chk.checkout("AAAABBBCD"), equalTo(130 + 50 + 45 + 30 + 20 + 15));
     }
 }
+
