@@ -92,13 +92,19 @@ public class CheckoutSolution {
             return specialOffers;
         }
 
-        public void setCurrentValueInCart(int currentValueInCart) {
+        public void setCurrentValueInCart(final int currentValueInCart) {
             this.currentValueInCart = currentValueInCart;
         }
 
-        public void add() {
+        public void add(final Map<String, ItemProcessed> cart) {
             this.quantity++;
             this.setCurrentValueInCart(calculateNewValue());
+            this.checkForFreeItems(cart);
+        }
+
+        private void checkForFreeItems(final Map<String, ItemProcessed> cart) {
+
+            
         }
 
         public void remove(final int quantityToRemove) {
@@ -136,7 +142,7 @@ public class CheckoutSolution {
         try {
             final Map<String, ItemProcessed> cart = generateNewCart();
             processSkus(skus, cart);
-            removeFreeItems(cart); //TODO change this to stream
+            //removeFreeItems(cart); //TODO change this to stream
             return calculateNonGroupedItems(cart) + calculateGroupedItems(cart);
 
         } catch (final RuntimeException e) {
@@ -159,7 +165,7 @@ public class CheckoutSolution {
 
         groupedItemsCart
                 .stream()
-                .sorted(Comparator.comparing(ItemProcessed::getPrice, Comparator.reverseOrder())) //todo check this ??
+                .sorted(Comparator.comparing(ItemProcessed::getPrice, Comparator.reverseOrder()))
                 .forEach(i -> {
                     var itemQuantity = i.getQuantity();
                     i.remove(quantityLeft.get());
@@ -183,7 +189,7 @@ public class CheckoutSolution {
         Arrays.stream(skus.split(""))
                 .map(sku -> validateIfKeyIsValid(cart, sku))
                 .map(cart::get)
-                .forEach(ItemProcessed::add);
+                .forEach(itemProcessed -> itemProcessed.add(cart));
     }
 
     private Map<String, ItemProcessed> removeFreeItems(final Map<String, ItemProcessed> cart) {
@@ -207,10 +213,6 @@ public class CheckoutSolution {
         throw new RuntimeException("Error Invalid Sku");
     }
 }
-
-
-
-
 
 
 
