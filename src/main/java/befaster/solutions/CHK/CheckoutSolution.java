@@ -105,8 +105,8 @@ public class CheckoutSolution {
         private void checkForFreeItems(final String sku, final Map<String, ItemProcessed> cart) {
             if (freeItems.containsKey(sku) && this.getQuantity() >= freeItems.get(sku).quantity()) {
                 int quantity = (int) Math.floor((double) this.getQuantity() / freeItems.get(sku).quantity());
-                cart.get(freeItems.get(sku).freeSku())
-                        .setCurrentValueInCart(calculateNewValue(this.getQuantity() - quantity));
+                final ItemProcessed freeItem = cart.get(freeItems.get(sku).freeSku());
+                freeItem.setCurrentValueInCart(calculateNewValue(freeItem.getQuantity() - quantity));
             }
         }
 
@@ -218,12 +218,6 @@ public class CheckoutSolution {
         throw new RuntimeException("Error Invalid Sku");
     }
 }
-
-
-
-
-
-
 
 
 
