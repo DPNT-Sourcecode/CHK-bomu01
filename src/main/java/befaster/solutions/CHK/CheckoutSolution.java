@@ -106,7 +106,7 @@ public class CheckoutSolution {
             if (freeItems.containsKey(sku) && this.getQuantity() >= freeItems.get(sku).quantity()) {
                 int quantity = (int) Math.floor((double) this.getQuantity() / freeItems.get(sku).quantity());
                 cart.get(freeItems.get(sku).freeSku())
-                        .setCurrentValueInCart(calculateNewValue(quantity));
+                        .setCurrentValueInCart(calculateNewValue(this.getQuantity() - quantity));
             }
         }
 
@@ -122,6 +122,9 @@ public class CheckoutSolution {
         }
 
         private int calculateNewValue(final int quantity) {
+            if(quantity <= 0){
+                return 0;
+            }
             if (this.getSpecialOffer().isEmpty()) {
                 return quantity * this.getPrice();
             }
@@ -215,6 +218,7 @@ public class CheckoutSolution {
         throw new RuntimeException("Error Invalid Sku");
     }
 }
+
 
 
 
