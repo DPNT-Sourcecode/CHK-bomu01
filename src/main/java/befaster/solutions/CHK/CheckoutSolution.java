@@ -96,15 +96,15 @@ public class CheckoutSolution {
             this.currentValueInCart = currentValueInCart;
         }
 
-        public void add() {
+        public ItemProcessed add() {
             this.quantity++;
             this.setCurrentValueInCart(calculateNewValue());
+            return this;
         }
 
         private void checkForFreeItems(final String sku, final Map<String, ItemProcessed> cart) {
-            if (freeItems.containsKey(sku) && this.getQuantity() >= freeItems.get(sku).quantity()) {
-                final var quantityToRemove = Math.floor((double) this.getQuantity() / freeItems.get(sku).quantity());
-                cart.get(freeItems.get(sku).freeSku()).remove((int) quantityToRemove);
+            if (freeItems.containsKey(sku) && this.getQuantity() % freeItems.get(sku).quantity() == 0) {
+                cart.get(freeItems.get(sku).freeSku()).remove(1);
             }
         }
 
@@ -189,11 +189,7 @@ public class CheckoutSolution {
     private void processSkus(final String skus, final Map<String, ItemProcessed> cart) {
         Arrays.stream(skus.split(""))
                 .map(sku -> validateIfKeyIsValid(cart, sku))
-                .forEach(key -> {
-                    var item = cart.get(key);
-                    item.add();
-                    item.checkForFreeItems(key, cart);
-                });
+                .forEach(key -> cart.get(key).add().checkForFreeItems(key, cart));
     }
 
     private Map<String, ItemProcessed> removeFreeItems(final Map<String, ItemProcessed> cart) {
@@ -217,6 +213,7 @@ public class CheckoutSolution {
         throw new RuntimeException("Error Invalid Sku");
     }
 }
+
 
 
 
