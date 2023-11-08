@@ -67,11 +67,11 @@ public class CheckoutSolution {
         private int currentValueInCart = 0;
         private List<SpecialOffer> specialOffers = List.of();
 
-        public ItemProcessed(int price) {
+        public ItemProcessed(final int price) {
             this.price = price;
         }
 
-        public ItemProcessed(int price, List<SpecialOffer> specialOffers) {
+        public ItemProcessed(final int price, List<SpecialOffer> specialOffers) {
             this.price = price;
             this.specialOffers = specialOffers;
         }
@@ -98,13 +98,15 @@ public class CheckoutSolution {
 
         public ItemProcessed add() {
             this.quantity++;
-            this.setCurrentValueInCart(calculateNewValue());
+            this.setCurrentValueInCart(calculateNewValue(this.quantity));
             return this;
         }
 
         private void checkForFreeItems(final String sku, final Map<String, ItemProcessed> cart) {
-            if (freeItems.containsKey(sku) && this.getQuantity() % freeItems.get(sku).quantity() == 0) {
-                cart.get(freeItems.get(sku).freeSku()).remove(1);
+            if (freeItems.containsKey(sku) && this.getQuantity() >= freeItems.get(sku).quantity()) {
+                int quantity = (int) Math.floor((double) this.getQuantity() / freeItems.get(sku).quantity());
+                cart.get(freeItems.get(sku).freeSku())
+                        .setCurrentValueInCart(calculateNewValue(quantity));
             }
         }
 
@@ -115,15 +117,15 @@ public class CheckoutSolution {
                 this.setCurrentValueInCart(0);
             } else {
                 this.quantity = this.quantity - quantityToRemove;
-                this.setCurrentValueInCart(calculateNewValue());
+                this.setCurrentValueInCart(calculateNewValue(this.quantity));
             }
         }
 
-        private int calculateNewValue() {
+        private int calculateNewValue(final int quantity) {
             if (this.getSpecialOffer().isEmpty()) {
-                return this.getQuantity() * this.getPrice();
+                return quantity * this.getPrice();
             }
-            int remainingQuantity = this.getQuantity();
+            int remainingQuantity = quantity;
             int currentValue = 0;
             for (final SpecialOffer offer : this.getSpecialOffer()) {
                 final var quantityToDiscount = (int) Math.floor((double) remainingQuantity / offer.quantity());
@@ -213,6 +215,7 @@ public class CheckoutSolution {
         throw new RuntimeException("Error Invalid Sku");
     }
 }
+
 
 
 
