@@ -154,7 +154,7 @@ public class CheckoutSolution {
                 .map(ItemProcessed::getQuantity)
                 .reduce(0, Integer::sum);
         final var numberOfDiscounts = Math.floor((double) quantityOfGroupedItems / groupedItems.quantity());
-        var quantityLeft = new AtomicInteger((int) numberOfDiscounts);
+        var quantityLeft = new AtomicInteger((int) numberOfDiscounts * groupedItems.quantity());
         var finalValue = new AtomicInteger((int) numberOfDiscounts * groupedItems.newPrice());
 
         groupedItemsCart
@@ -206,6 +206,7 @@ public class CheckoutSolution {
         throw new RuntimeException("Error Invalid Sku");
     }
 }
+
 
 
 
