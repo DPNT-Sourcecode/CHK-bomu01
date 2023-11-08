@@ -161,8 +161,9 @@ public class CheckoutSolution {
                 .stream()
                 .sorted(Comparator.comparing(ItemProcessed::getPrice, Comparator.reverseOrder())) //todo check this ??
                 .forEach(i -> {
+                    var itemQuantity = i.getQuantity();
                     i.remove(quantityLeft.get());
-                    quantityLeft.set(quantityLeft.get() - i.getQuantity());
+                    quantityLeft.set(quantityLeft.get() - itemQuantity);
                     finalValue.set(finalValue.get() + i.getQuantity() * i.getPrice());
                 });
 
@@ -206,6 +207,7 @@ public class CheckoutSolution {
         throw new RuntimeException("Error Invalid Sku");
     }
 }
+
 
 
 
