@@ -102,8 +102,14 @@ public class CheckoutSolution {
         }
 
         public void remove(final int quantityToRemove) {
-            this.quantity = this.quantity - quantityToRemove;
-            this.setCurrentValueInCart(calculateNewValue());
+            if (quantityToRemove <= 0) {
+            } else if (this.quantity - quantityToRemove <= 0) {
+                this.quantity = 0;
+                this.setCurrentValueInCart(calculateNewValue());
+            } else {
+                this.quantity = this.quantity - quantityToRemove;
+                this.setCurrentValueInCart(calculateNewValue());
+            }
         }
 
         private int calculateNewValue() {
@@ -145,15 +151,22 @@ public class CheckoutSolution {
                 .map(Map.Entry::getValue)
                 .toList();
         final var quantityOfGroupedItems = groupedItemsCart.stream()
-                .map(entry -> entry.getValue().getQuantity())
-                .reduce(0 ,Integer::sum);
+                .map(ItemProcessed::getQuantity)
+                .reduce(0, Integer::sum);
         final var numberOfDiscounts = Math.floor((double) quantityOfGroupedItems / groupedItems.quantity());
-        var discountedPrice = numberOfDiscounts * groupedItems.newPrice();
-        var quantityLeft = new AtomicInteger((int)numberOfDiscounts);
+        var quantityLeft = new AtomicInteger((int) numberOfDiscounts);
+        var finalValue = new AtomicInteger((int) numberOfDiscounts * groupedItems.newPrice());
+
         groupedItemsCart
                 .stream()
-                .sorted(Comparator.comparing())
+                .sorted(Comparator.comparing(ItemProcessed::getPrice, Comparator.reverseOrder())) //todo check this ??
+                .forEach(i -> {
+                    i.remove(quantityLeft.get());
+                    quantityLeft.set(quantityLeft.get() - i.getQuantity());
+                    finalValue.set(finalValue.get() + i.getQuantity() * i.getPrice());
+                });
 
+        return finalValue.get();
     }
 
     private Integer calculateNonGroupedItems(final Map<String, ItemProcessed> cart) {
@@ -193,6 +206,7 @@ public class CheckoutSolution {
         throw new RuntimeException("Error Invalid Sku");
     }
 }
+
 
 
 
