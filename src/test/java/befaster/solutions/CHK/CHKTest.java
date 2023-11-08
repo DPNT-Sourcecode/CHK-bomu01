@@ -59,4 +59,3 @@ public class CHKTest {
         assertThat(chk.checkout("ZSSZXXX"), equalTo(45 + 45 + 17));
     }
 }
-
