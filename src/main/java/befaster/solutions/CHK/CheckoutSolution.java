@@ -111,8 +111,8 @@ public class CheckoutSolution {
         public void remove(final int quantityToRemove) {
             if (quantityToRemove <= 0) {
             } else if (this.quantity - quantityToRemove <= 0) {
-                this.quantity = 0;
-                this.setCurrentValueInCart(calculateNewValue());
+                this.quantity = this.quantity - quantityToRemove;
+                this.setCurrentValueInCart(0);
             } else {
                 this.quantity = this.quantity - quantityToRemove;
                 this.setCurrentValueInCart(calculateNewValue());
@@ -217,6 +217,7 @@ public class CheckoutSolution {
         throw new RuntimeException("Error Invalid Sku");
     }
 }
+
 
 
 
