@@ -1,9 +1,7 @@
 package befaster.solutions.CHK;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class CheckoutSolution {
 
@@ -132,7 +130,7 @@ public class CheckoutSolution {
         try {
             final Map<String, ItemProcessed> cart = generateNewCart();
             processSkus(skus, cart);
-            removeFreeItems(cart);
+            removeFreeItems(cart); //TODO change this to stream
             return calculateNonGroupedItems(cart) + calculateGroupedItems(cart);
 
         } catch (final RuntimeException e) {
@@ -141,7 +139,21 @@ public class CheckoutSolution {
     }
 
     private Integer calculateGroupedItems(final Map<String, ItemProcessed> cart) {
-        return 0;
+        final var groupedItemsCart = cart.entrySet()
+                .stream()
+                .filter(e -> groupedItems.skus().contains(e.getKey()))
+                .map(Map.Entry::getValue)
+                .toList();
+        final var quantityOfGroupedItems = groupedItemsCart.stream()
+                .map(entry -> entry.getValue().getQuantity())
+                .reduce(0 ,Integer::sum);
+        final var numberOfDiscounts = Math.floor((double) quantityOfGroupedItems / groupedItems.quantity());
+        var discountedPrice = numberOfDiscounts * groupedItems.newPrice();
+        var quantityLeft = new AtomicInteger((int)numberOfDiscounts);
+        groupedItemsCart
+                .stream()
+                .sorted(Comparator.comparing())
+
     }
 
     private Integer calculateNonGroupedItems(final Map<String, ItemProcessed> cart) {
@@ -181,6 +193,7 @@ public class CheckoutSolution {
         throw new RuntimeException("Error Invalid Sku");
     }
 }
+
 
 
 
